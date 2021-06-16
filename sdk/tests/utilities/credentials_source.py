@@ -30,6 +30,7 @@ class CredentialsSource:
     @classmethod
     def fetch_credentials(cls):
         credentials = cls.secrets_path()
+        access_token = os.getenv("FBN_LUSID_ACCESS_TOKEN", None)
 
         # Get all the required variables available as environment variables
         vars = {
@@ -38,7 +39,8 @@ class CredentialsSource:
             "password": os.getenv("FBN_PASSWORD", None),
             "client_id": os.getenv("FBN_CLIENT_ID", None),
             "client_secret": os.getenv("FBN_CLIENT_SECRET", None),
-            "api_url": os.getenv("FBN_LUSID_API_URL", None)
+            "api_url": os.getenv("FBN_LUSID_API_URL", None),
+            "access_token": access_token
         }
 
         # If there is a secrets file get the required variables from here too
@@ -60,7 +62,7 @@ class CredentialsSource:
                 if value is None:
                     vars[key] = config_vars[key]
 
-        if None in vars.values():
+        if access_token is not None and None in vars.values():
             assert False, "Source test configuration missing values from both secrets file and environment variables"
 
         vars_optional = {

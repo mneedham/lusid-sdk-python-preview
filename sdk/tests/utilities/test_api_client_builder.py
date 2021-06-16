@@ -67,14 +67,14 @@ class ApiClientBuilderTests(unittest.TestCase):
         secrets = {
             "api": {
                 config_keys[key]["config"]: "DUMMYVALUE" for key in source_config_details.keys() if
-                "proxy" not in key
+                "proxy" not in key and "access_token" not in key
             }
         }
 
         env_vars = {}
 
         api_configuration = ApiConfiguration(**{
-            key: value for key, value in source_config_details.items() if "proxy" not in key
+            key: value for key, value in source_config_details.items() if "proxy" not in key and "access_token" not in key
         })
 
         # Use a temporary file and no environment variables to generate the API Client
